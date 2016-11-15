@@ -29,6 +29,10 @@ Scrabble.prototype.score = function(word) {
   var score = 0;
   var userWord = word.toUpperCase();
 
+  if (userWord.length == 7) {
+    score += 50;
+  }
+
   for (var i = 0; i < userWord.length; i++) {
     for (var letter in letters) {
       if (letter == userWord[i]) {
@@ -40,7 +44,9 @@ Scrabble.prototype.score = function(word) {
 };
 
 var myScrabble = new Scrabble();
-
 myScrabble.score("hello");
+myScrabble.score("aaaaaaa");
+
+
 
 module.exports = Scrabble;
