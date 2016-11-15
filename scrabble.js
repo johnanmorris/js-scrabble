@@ -1,15 +1,4 @@
 var Scrabble = function() {
-  //   LETTERS = {
-  //     1 => %w(A E I O U L N R S T),
-  //     2 => %w(D G),
-  //     3 => %w(B C M P),
-  //     4 => %w(F H V W Y),
-  //     5 => %w(K),
-  //     8 => %w(J X),
-  //     10 => %w(Q Z)
-  //   }
-  //
-
 
 };
 
@@ -25,7 +14,7 @@ var letters = {
   Y: 4, Z: 10
 };
 
-Scrabble.prototype.score = function(word) {
+Scrabble.score = function(word) {
   var score = 0;
   var userWord = word.toUpperCase();
 
@@ -43,10 +32,43 @@ Scrabble.prototype.score = function(word) {
   return score;
 };
 
-var myScrabble = new Scrabble();
-myScrabble.score("hello");
-myScrabble.score("aaaaaaa");
+Scrabble.highestScoreFrom = function(arrayOfWords) {
+  var scoring = {};
+  var maxWords = [];
 
-
+  for(var i = 0; i < arrayOfWords.length; i++) {
+    wordScore = Scrabble.score(arrayOfWords[i]);
+    Object.defineProperty(scoring, arrayOfWords[i], {value: wordScore, enumerable: true});
+  }
+  console.log(scoring);
+  var values = Object.values(scoring).sort();
+};
 
 module.exports = Scrabble;
+
+
+
+Scrabble.score("hello");
+// console.log(Scrabble.score("hello")); // 8
+
+Scrabble.score("aaaaaaa");
+// console.log(Scrabble.score("aaaaaaa")); // 57
+
+var scores = Scrabble.highestScoreFrom(["hello", "aaaaaaa"]);
+
+//     max_val = scoring_hash.values.max
+//     scoring_hash.each do |key, value|
+//       if value == max_val
+//         max_words << key
+//       end
+//     end
+//
+//     max_words.sort_by! {|word| word.length}
+//
+//     if max_words.last.length == 7
+//       return max_words.last
+//     else
+//       return max_words.first
+//     end
+//   end
+// end
