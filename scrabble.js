@@ -62,24 +62,23 @@ var isHigherScore = function(wordOne, wordTwo) {
   var scoreOne = Scrabble.score(wordOne);
   var scoreTwo = Scrabble.score(wordTwo);
 
-  if (scoreOne < scoreTwo) {
+  if (scoreOne > scoreTwo) {
     return false;
-  } else if (scoreTwo > scoreOne) {
+  }
+  else if (scoreTwo > scoreOne ) {
     return true;
-  } else {
-    if (wordOne.length === 7) {
+  }
+
+  else if (scoreTwo === scoreOne) {
+    if (wordOne.length === 7 && wordTwo.length < 7) {
       return false;
-    }
-    else if (wordTwo.length === 7) {
+    } else if (wordTwo.length === 7 && wordOne.length < 7) {
       return true;
-    }
-    else if (wordOne.length < wordTwo.length) {
+    } else if (wordOne.length < wordTwo.length) {
       return false;
-    }
-    else if (wordTwo.length < wordOne.length) {
+    } else if (wordTwo.length < wordOne.length) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -96,6 +95,7 @@ Player.prototype.play = function(word) {
     return false;
   } else {
     this.plays.push(word);
+    return true;
   }
 };
 
@@ -116,29 +116,28 @@ Player.prototype.hasWon = function () {
   }
 };
 
-console.log(Scrabble.score("hippo"));    // 12
-console.log(Scrabble.score("brat"));    // 6
-console.log(Scrabble.score("aaaaaaa")); // 57
-console.log(Scrabble.highestScoreFrom(["zoos", "hex", "kittys"]));                         // hex
-console.log(Scrabble.highestScoreFrom(["staring", "zzzzzx", "cat"]));                      // staring
-console.log(Scrabble.highestScoreFrom(["kittys", "hex", "fox", "kittys", "zoos", "wix"])); // hex
+Player.prototype.highestScoringWord = function() {
+  var highScore = Scrabble.highestScoreFrom(this.plays);
+  return highScore;
+};
 
-
-var noelle = new Player("Noelle");
-console.log(noelle.name);
-noelle.play("hippo");
-noelle.play("brat");
-console.log(noelle.plays);
-console.log(noelle.totalScore());
-console.log(noelle.hasWon());
-noelle.play("aaaaaaa");
-console.log(noelle.plays);
-console.log(noelle.totalScore());
-console.log(noelle.hasWon());
+noelle = new Player("Noelle");
+console.log("Player.name: " + noelle.name);
 noelle.play("zzzzzx");
-console.log(noelle.plays);
-console.log("Total Score: " + noelle.totalScore());
-console.log("Return of hasWon: " + noelle.hasWon());
-console.log("Return of play after win: " + noelle.play("apt"));
+noelle.play("cat");
+noelle.play("staring");
+console.log(" ");
+console.log("Score of zzzzzzx: " + Scrabble.score("zzzzzx"));
+console.log("Score of cat: " + Scrabble.score("cat"));
+console.log("Score of staring: " + Scrabble.score("staring"));
+console.log(" ");
+console.log("Plays: " + noelle.plays);
+console.log("Total score: " + noelle.totalScore());
+console.log("noelle.highestScoringWord: " + noelle.highestScoringWord());
+console.log(" ");
+console.log("Noelle won?: " + noelle.hasWon());
+console.log("Can play another word after win?: " + noelle.play("apple"));
+console.log("Plays after attempting to play another word: " + noelle.plays);
+
 
 module.exports = Scrabble;
