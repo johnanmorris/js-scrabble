@@ -2,7 +2,7 @@ var Scrabble = function() {
 
 };
 
-var letters = {
+const LETTERS = {
   A: 1, B: 3, C: 3,
   D: 2, E: 1, F: 4,
   G: 2, H: 4, I: 1,
@@ -23,9 +23,9 @@ Scrabble.score = function(word) {
   }
 
   for (var i = 0; i < userWord.length; i++) {
-    for (var letter in letters) {
+    for (var letter in LETTERS) {
       if (letter == userWord[i]) {
-        score += letters[letter];
+        score += LETTERS[letter];
       }
     }
   }
@@ -33,42 +33,60 @@ Scrabble.score = function(word) {
 };
 
 Scrabble.highestScoreFrom = function(arrayOfWords) {
-  var scoring = {};
-  var maxWords = [];
+  var highestWord = arrayOfWords[0];
 
-  for(var i = 0; i < arrayOfWords.length; i++) {
-    wordScore = Scrabble.score(arrayOfWords[i]);
-    Object.defineProperty(scoring, arrayOfWords[i], {value: wordScore, enumerable: true});
+  // start at 1 because the array at index [0] is already set as highestWord
+  for(var i = 1; i < arrayOfWords.length; i++) {
+    if (isHigherScore(highestWord, arrayOfWords[i])) {
+      highestWord = arrayOfWords[i];
+    }
   }
-  console.log(scoring);
-  var values = Object.values(scoring).sort();
+  return highestWord;
+};
+
+// This is an extra function I've written, which:
+// 1. Does the actual scoring (scoreOne and scoreTwo);
+// 2. Compares the numerical value and returns true if the second word
+//    a) has the numerically higher score,
+//    b) uses all seven letters, or
+//    c) is shorter than the first word; and
+// 3. Deals with the final tie-breaker, whether the word appears first
+//    in the list, by the final else returning false. This function is
+//    used in highestScoreFrom in conjunction with the variable
+//    highestWord, which always stores the *first* word with the highest
+//    score.
+
+var isHigherScore = function(wordOne, wordTwo) {
+  var scoreOne = Scrabble.score(wordOne);
+  var scoreTwo = Scrabble.score(wordTwo);
+
+  if (scoreOne < scoreTwo) {
+    return false;
+  } else if (scoreTwo > scoreOne) {
+    return true;
+  } else {
+    if (wordOne.length === 7) {
+      return false;
+    }
+    else if (wordTwo.length === 7) {
+      return true;
+    }
+    else if (wordOne.length < wordTwo.length) {
+      return false;
+    }
+    else if (wordTwo.length < wordOne.length) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 };
 
 module.exports = Scrabble;
 
-
-
-Scrabble.score("hello");
-// console.log(Scrabble.score("hello")); // 8
-
-Scrabble.score("aaaaaaa");
-// console.log(Scrabble.score("aaaaaaa")); // 57
-
-var scores = Scrabble.highestScoreFrom(["hello", "aaaaaaa"]);
-
-//     max_val = scoring_hash.values.max
-//     scoring_hash.each do |key, value|
-//       if value == max_val
-//         max_words << key
-//       end
-//     end
-//
-//     max_words.sort_by! {|word| word.length}
-//
-//     if max_words.last.length == 7
-//       return max_words.last
-//     else
-//       return max_words.first
-//     end
-//   end
-// end
+console.log(Scrabble.score("hello"));    // 8
+console.log(Scrabble.score("aaaaaaa")); // 57
+console.log(Scrabble.highestScoreFrom(["zoos", "hex", "kittys"]));                         // hex
+console.log(Scrabble.highestScoreFrom(["staring", "zzzzzx", "cat"]));                      // staring
+console.log(Scrabble.highestScoreFrom(["kittys", "hex", "fox", "kittys", "zoos", "wix"])); // hex
