@@ -1,3 +1,5 @@
+/* SCRABBLE */
+
 var Scrabble = function() {
 
 };
@@ -84,6 +86,8 @@ var isHigherScore = function(wordOne, wordTwo) {
   }
 };
 
+/* PLAYER */
+
 var Player = function(player) {
   this.name = player;
   this.plays = [];
@@ -126,6 +130,51 @@ Player.prototype.highestWordScore = function() {
   return Scrabble.score(highestWord);
 };
 
+/* TILEBAG */
+
+var TileBag = function() {
+  this.tiles = {
+    A: 9, B: 2, C: 2,
+    D: 4, E: 12, F: 2,
+    G: 3, H: 2, I: 9,
+    J: 1, K: 1, L: 4,
+    M: 2, N: 6, O: 8,
+    P: 2, Q: 1, R: 6,
+    S: 4, T: 6, U: 4,
+    V: 2, W: 2, X: 1,
+    Y: 2, Z: 1
+  };
+};
+
+TileBag.prototype.draw = function(num) {
+  var available = Object.keys(this.tiles);
+  var selection = [];
+
+  if (num > this.tilesRemaining()) {
+    num = this.tilesRemaining();
+  }
+
+  while (selection.length < num) {
+    var tile = available[Math.floor(Math.random() * available.length)];
+    if (this.tiles[tile] > 0) {
+      selection.push(tile);
+      this.tiles[tile] -= 1;
+    }
+  }
+  return selection;
+};
+
+TileBag.prototype.tilesRemaining = function() {
+  var total = 0;
+  var tileCount = Object.values(this.tiles);
+  for (var i = 0; i < tileCount.length; i++) {
+    total += tileCount[i];
+  }
+  return total;
+};
+
+/* MANUAL TESTS */
+
 noelle = new Player("Noelle");
 console.log("Player.name: " + noelle.name);
 noelle.play("zzzzzx");
@@ -144,5 +193,21 @@ console.log("Noelle won?: " + noelle.hasWon());
 console.log("Can play another word after win?: " + noelle.play("apple"));
 console.log("Plays after attempting to play another word: " + noelle.plays);
 console.log("Score of highest scoring word, " + noelle.highestScoringWord() + ": " + noelle.highestWordScore());
+console.log(" ");
+myTilebag = new TileBag();
+console.log("Draw 8 from tilebag: " + myTilebag.draw(8));
+console.log("Tile count: " + myTilebag.tilesRemaining());
+console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Tile count: " + myTilebag.tilesRemaining());
+console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Tile count: " + myTilebag.tilesRemaining());
+console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Tile count: " + myTilebag.tilesRemaining());
+console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Tile count: " + myTilebag.tilesRemaining());
+console.log("Draw 9 from tilebag: " + myTilebag.draw(9));
+console.log("Tile count: " + myTilebag.tilesRemaining());
+console.log("Attempting to draw 2 from tilebag, should draw 1: " + myTilebag.draw(2));
+console.log("Tile count: " + myTilebag.tilesRemaining());
 
 module.exports = Scrabble;
