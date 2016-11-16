@@ -55,6 +55,8 @@ Scrabble.highestScoreFrom = function(arrayOfWords) {
 //    used in highestScoreFrom in conjunction with the variable
 //    highestWord, which always stores the *first* word with the highest
 //    score.
+// I suppose I could have included it in the function above, but it
+// seemed cleaner to separate it.
 
 var isHigherScore = function(wordOne, wordTwo) {
   var scoreOne = Scrabble.score(wordOne);
@@ -83,10 +85,60 @@ var isHigherScore = function(wordOne, wordTwo) {
   }
 };
 
-module.exports = Scrabble;
+var Player = function(player) {
+  this.name = player;
+  this.plays = [];
+};
 
-console.log(Scrabble.score("hello"));    // 8
+Player.prototype.play = function(word) {
+  var score = this.totalScore();
+  if (score >= 100) {
+    return false;
+  } else {
+    this.plays.push(word);
+  }
+};
+
+Player.prototype.totalScore = function() {
+  var score = 0;
+  for(var i=0; i < this.plays.length; i++) {
+    score += Scrabble.score(this.plays[i]);
+  }
+  return score;
+};
+
+Player.prototype.hasWon = function () {
+  var score = this.totalScore();
+  if (score >= 100) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+console.log(Scrabble.score("hippo"));    // 12
+console.log(Scrabble.score("brat"));    // 6
 console.log(Scrabble.score("aaaaaaa")); // 57
 console.log(Scrabble.highestScoreFrom(["zoos", "hex", "kittys"]));                         // hex
 console.log(Scrabble.highestScoreFrom(["staring", "zzzzzx", "cat"]));                      // staring
 console.log(Scrabble.highestScoreFrom(["kittys", "hex", "fox", "kittys", "zoos", "wix"])); // hex
+
+
+var noelle = new Player("Noelle");
+console.log(noelle.name);
+noelle.play("hippo");
+noelle.play("brat");
+console.log(noelle.plays);
+console.log(noelle.totalScore());
+console.log(noelle.hasWon());
+noelle.play("aaaaaaa");
+console.log(noelle.plays);
+console.log(noelle.totalScore());
+console.log(noelle.hasWon());
+noelle.play("zzzzzx");
+console.log(noelle.plays);
+console.log("Total Score: " + noelle.totalScore());
+console.log("Return of hasWon: " + noelle.hasWon());
+console.log("Return of play after win: " + noelle.play("apt"));
+
+module.exports = Scrabble;
