@@ -117,8 +117,13 @@ Player.prototype.hasWon = function () {
 };
 
 Player.prototype.highestScoringWord = function() {
-  var highScore = Scrabble.highestScoreFrom(this.plays);
-  return highScore;
+  var highestWord = Scrabble.highestScoreFrom(this.plays);
+  return highestWord;
+};
+
+Player.prototype.highestWordScore = function() {
+  var highestWord = this.highestScoringWord();
+  return Scrabble.score(highestWord);
 };
 
 noelle = new Player("Noelle");
@@ -138,6 +143,6 @@ console.log(" ");
 console.log("Noelle won?: " + noelle.hasWon());
 console.log("Can play another word after win?: " + noelle.play("apple"));
 console.log("Plays after attempting to play another word: " + noelle.plays);
-
+console.log("Score of highest scoring word, " + noelle.highestScoringWord() + ": " + noelle.highestWordScore());
 
 module.exports = Scrabble;
