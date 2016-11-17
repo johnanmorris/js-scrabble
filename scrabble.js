@@ -146,7 +146,7 @@ var TileBag = function() {
   };
 };
 
-TileBag.prototype.draw = function(num) {
+TileBag.prototype.drawTiles = function(num) {
   var available = Object.keys(this.tiles);
   var selection = [];
 
@@ -195,19 +195,19 @@ console.log("Plays after attempting to play another word: " + noelle.plays);
 console.log("Score of highest scoring word, " + noelle.highestScoringWord() + ": " + noelle.highestWordScore());
 console.log(" ");
 myTilebag = new TileBag();
-console.log("Draw 8 from tilebag: " + myTilebag.draw(8));
+console.log("Draw 8 from tilebag: " + myTilebag.drawTiles(8));
 console.log("Tile count: " + myTilebag.tilesRemaining());
-console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Draw 20 from tilebag: " + myTilebag.drawTiles(20));
 console.log("Tile count: " + myTilebag.tilesRemaining());
-console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Draw 20 from tilebag: " + myTilebag.drawTiles(20));
 console.log("Tile count: " + myTilebag.tilesRemaining());
-console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Draw 20 from tilebag: " + myTilebag.drawTiles(20));
 console.log("Tile count: " + myTilebag.tilesRemaining());
-console.log("Draw 20 from tilebag: " + myTilebag.draw(20));
+console.log("Draw 20 from tilebag: " + myTilebag.drawTiles(20));
 console.log("Tile count: " + myTilebag.tilesRemaining());
-console.log("Draw 9 from tilebag: " + myTilebag.draw(9));
+console.log("Draw 9 from tilebag: " + myTilebag.drawTiles(9));
 console.log("Tile count: " + myTilebag.tilesRemaining());
-console.log("Attempting to draw 2 from tilebag, should draw 1: " + myTilebag.draw(2));
+console.log("Attempting to draw 2 from tilebag, should draw 1: " + myTilebag.drawTiles(2));
 console.log("Tile count: " + myTilebag.tilesRemaining());
 
 module.exports = Scrabble;
